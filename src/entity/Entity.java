@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Entity {
 
-    private int x, y;
+    private int worldX, worldY;
     private int speed;
     private int health;
     private int spriteNum;
@@ -16,19 +16,19 @@ public class Entity {
             right1, right2, right3, right4;
     public String direction;
 
-    public Entity(int x, int y, int speed) {
-        this.x = x;
-        this.y = y;
+    public Entity(int worldX, int worldY, int speed) {
+        this.worldX = worldX;
+        this.worldY = worldY;
         this.speed = speed;
         this.health = 100;
         this.spriteNum = 1;
         this.spriteCounter = 0;
     }
 
-    public int getX() { return x; }
+    public int getWorldX() { return worldX; }
 
-    public int getY() {
-        return y;
+    public int getWorldY() {
+        return worldY;
     }
 
     public int getSpeed() {
@@ -47,11 +47,11 @@ public class Entity {
 
 
     public void setX(int x) {
-        this.x = x;
+        this.worldX = x;
     }
 
     public void setY(int y) {
-        this.y = y;
+        this.worldY = y;
     }
 
     public void setSpeed(int speed) {

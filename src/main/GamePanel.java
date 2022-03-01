@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,31 +11,43 @@ public class GamePanel extends JPanel implements Runnable{
     // SCREEN SETTINGS
     private final int originalTileSize = 16; // 16x16 tile
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+    // if screen is 2560x1440 but the screen scaling setting is 125% for example,
+    // the width will be 2048 and the height, 1152 (because 2048 * 125% = 2560, etc).
     private final int defaultScreenWidth = (int) screenSize.getWidth();
     private final int defaultScreenHeight = (int) screenSize.getHeight();
 
     private final int scale = 2; // to change later to adjust with panel size
 
-    final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = (defaultScreenWidth* 3/4)/(originalTileSize*scale);
-    final int maxScreenRow = (defaultScreenHeight* 3/4)/(originalTileSize*scale);
+    private final int tileSize = originalTileSize * scale;
 
-    final int screenWidth = tileSize * maxScreenCol;
-    final int screenHeight = tileSize * maxScreenRow;
+    // these two variable are the max number of tiles display on the screen (width and height)
+    private final int maxScreenCol = (defaultScreenWidth* 3/4)/(originalTileSize*scale);
+    private final int maxScreenRow = (defaultScreenHeight* 3/4)/(originalTileSize*scale);
+
+    private final int screenWidth = tileSize * maxScreenCol;
+    private final int screenHeight = tileSize * maxScreenRow;
+
+    // WORLD SETTINGS
+    private final int maxWorldCol = 80;
+    private final int maxWorldRow = 80;
+    private final int worldWidth = tileSize * maxWorldCol;
+    private final int worldHeight = tileSize * maxWorldRow;
+
+    // public final int worldWidth = tileSize *
+
+    TileManager tileM = new TileManager(this);
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH);
 
     private static final int TARGET_FPS = 60;
 
-    // Set player's default position
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
-
-
     public GamePanel() {
+
+        System.out.println(defaultScreenWidth);
+        System.out.println(defaultScreenHeight);
 
         //System.out.println("width " + maxScreenCol);
         //System.out.println("height " + maxScreenRow);
@@ -57,6 +70,8 @@ public class GamePanel extends JPanel implements Runnable{
 
     @Override
     public void run() {
+
+        tileM.createMap();
 
         double drawInterval = 1000000000.0 / TARGET_FPS; // 0.01666 seconds
         double delta = 0;
@@ -87,36 +102,6 @@ public class GamePanel extends JPanel implements Runnable{
                 timer = 0;
             }
         }
-
-
-        /*
-        double drawInterval = 1000000000.0 / FPS; // 0.01666 seconds
-        double nextDrawTime = System.nanoTime() + drawInterval;
-
-        while(gameThread != null) {
-
-            long currentTime = System.nanoTime();
-
-            // UPDATE: update information like character position
-            update();
-
-            // DRAW: draw the screen with the updated information
-            repaint(); // call paintComponent method
-
-            try {
-                double remainingTime = (nextDrawTime - System.nanoTime())/1000000; // in milliseconds
-                if (remainingTime < 0) {
-                    remainingTime = 0;
-                }
-                Thread.sleep((long) remainingTime);
-
-                nextDrawTime += drawInterval;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-         */
-
     }
 
     public void update() {
@@ -130,6 +115,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D)g;
 
+        tileM.draw(g2);
         player.draw(g2);
 
         g2.dispose();
@@ -138,4 +124,18 @@ public class GamePanel extends JPanel implements Runnable{
     public int getTileSize() {
         return tileSize;
     }
+
+    public int getMaxScreenCol() { return maxScreenCol; }
+
+    public int getMaxScreenRow() { return maxScreenRow;}
+
+    public int getScreenWidth() { return screenWidth; }
+
+    public int getScreenHeight() { return screenHeight; }
+
+    public int getOriginalTileSize() { return originalTileSize; }
+
+    public int getMaxWorldCol() { return maxWorldCol; }
+
+    public int getMaxWorldRow() { return maxWorldRow; }
 }

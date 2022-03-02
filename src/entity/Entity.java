@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
@@ -15,6 +16,8 @@ public class Entity {
             left1, left2, left3, left4,
             right1, right2, right3, right4;
     public String direction;
+    public Rectangle solidArea;
+    public boolean collisionOn = false;
 
     public Entity(int worldX, int worldY, int speed) {
         this.worldX = worldX;
@@ -45,6 +48,14 @@ public class Entity {
 
     public int getSpriteAnimationSpeed() { return spriteAnimationSpeed; }
 
+    public String getDirection() { return direction; }
+
+    public Rectangle getSolidArea() { return solidArea; }
+
+    public boolean getCollisionOn() { return collisionOn; }
+
+
+
 
     public void setX(int x) {
         this.worldX = x;
@@ -62,6 +73,18 @@ public class Entity {
         this.health = health;
     }
 
+    public void setSolidArea(int x, int y, int width, int height) {
+        this.solidArea = new Rectangle(x, y, width, height);
+    }
+
+    public void setCollisionOn(boolean collisionOn) {
+        this.collisionOn = collisionOn;
+    }
+
+    public void setSpriteNumToOne() {
+        spriteNum = 1;
+    }
+
 
     public void incrementSpriteNum() {
         if (spriteNum < 4) {
@@ -69,10 +92,6 @@ public class Entity {
         } else {
             spriteNum = 1;
         }
-    }
-
-    public void setSpriteNumToOne() {
-        spriteNum = 1;
     }
 
     public void incrementSpriteCounter() {

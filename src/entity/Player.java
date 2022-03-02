@@ -26,6 +26,9 @@ public class Player extends Entity {
         this.stamina = 100;
         this.level = 0;
 
+        setSolidArea(8, 16, 32, 32);
+        setCollisionOn(true);
+
         this.gp = gp;
         this.keyH = keyH;
 
@@ -68,17 +71,27 @@ public class Player extends Entity {
                 keyH.leftPressed || keyH.rightPressed) {
 
             if (keyH.upPressed) {
-                setY(getWorldY() - getSpeed()); // goes up
                 direction = "up";
             } else if (keyH.downPressed) {
-                setY(getWorldY() + getSpeed()); // goes down
                 direction = "down";
             } else if (keyH.leftPressed) {
-                setX(getWorldX() - getSpeed()); // goes left
                 direction = "left";
             } else if (keyH.rightPressed) {
-                setX(getWorldX() + getSpeed()); // goes right
                 direction = "right";
+            }
+
+            // CHECK TILE COLLISION
+            setCollisionOn(false);
+            gp.cChecker.checkTile(this);
+
+            // IF COLLISION IS FALSE, PLAYER CAN MOVE
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up" -> setY(getWorldY() - getSpeed()); // goes up
+                    case "down" -> setY(getWorldY() + getSpeed()); // goes down
+                    case "left" -> setX(getWorldX() - getSpeed()); // goes left
+                    case "right" -> setX(getWorldX() + getSpeed()); // goes right
+                }
             }
 
             incrementSpriteCounter();
@@ -93,10 +106,6 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-
-        //g2.setColor(Color.WHITE);
-
-        //g2.fillRect(getX(), getY(), gp.getTileSize(), gp.getTileSize());
 
         BufferedImage image = null;
         switch (direction) {
@@ -137,9 +146,7 @@ public class Player extends Entity {
 
     }
 
-    public int getScreenX() {
-        return screenX;
-    }
+    public int getScreenX() { return screenX; }
 
     public int getScreenY() {
         return screenY;

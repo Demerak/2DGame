@@ -16,7 +16,8 @@ public class Entity {
             left1, left2, left3, left4,
             right1, right2, right3, right4;
     public String direction;
-    public Rectangle solidArea;
+    private Rectangle solidArea;
+    private int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
 
     public Entity(int worldX, int worldY, int speed) {
@@ -52,6 +53,10 @@ public class Entity {
 
     public Rectangle getSolidArea() { return solidArea; }
 
+    public int getSolidAreaDefaultX() { return solidAreaDefaultX; }
+
+    public int getSolidAreaDefaultY() { return solidAreaDefaultY; }
+
     public boolean getCollisionOn() { return collisionOn; }
 
 
@@ -76,6 +81,11 @@ public class Entity {
     public void setSolidArea(int x, int y, int width, int height) {
         this.solidArea = new Rectangle(x, y, width, height);
     }
+
+    public void setSolidAreaDefaultX(int defaultX) { this.solidAreaDefaultX = defaultX; }
+
+    public void setSolidAreaDefaultY(int defaultY) { this.solidAreaDefaultY = defaultY; }
+
 
     public void setCollisionOn(boolean collisionOn) {
         this.collisionOn = collisionOn;

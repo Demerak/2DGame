@@ -1,10 +1,12 @@
 package main;
 
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -37,7 +39,9 @@ public class GamePanel extends JPanel implements Runnable{
     // public final int worldWidth = tileSize *
 
     TileManager tileM = new TileManager(this);
-    public CollisionChecker cChecker = new CollisionChecker(this);
+    public CollisionChecker cChecker = new CollisionChecker(this); // todo change to private
+    public AssetSetter aSetter = new AssetSetter(this); // todo change to private
+    public ArrayList<SuperObject> objList =  new ArrayList<>();
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
@@ -61,6 +65,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true); // the panel can be "focused" to received key input
 
 
+    }
+
+    public void setupGame() {
+        aSetter.setObject();
     }
 
     public void startGameThread() {
@@ -116,7 +124,17 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D)g;
 
+        // TILE
         tileM.draw(g2);
+
+        // OBJECT
+        for (int i = 0; i < objList.size(); i++) {
+            if(objList.get(i) != null) {
+                objList.get(i).draw(g2, this);
+            }
+        }
+
+        // PLAYER
         player.draw(g2);
 
         g2.dispose();

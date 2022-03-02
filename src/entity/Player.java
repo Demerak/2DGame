@@ -19,14 +19,14 @@ public class Player extends Entity {
     private final int screenX;
     private final int screenY;
 
-
-
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp.getScreenWidth()/2, gp.getScreenHeight()/2, 2);
         this.stamina = 100;
         this.level = 0;
 
-        setSolidArea(8, 16, 32, 32);
+        setSolidArea(8, 50, 16, 2);
+        setSolidAreaDefaultX(getSolidArea().x);
+        setSolidAreaDefaultY(getSolidArea().y);
         setCollisionOn(true);
 
         this.gp = gp;
@@ -35,7 +35,6 @@ public class Player extends Entity {
         // center of the screen
         screenX = gp.getScreenWidth()/2 - (gp.getTileSize()/2);
         screenY = gp.getScreenHeight()/2 - (gp.getTileSize()/2);
-
 
         getPlayerImage();
         direction ="up";
@@ -83,6 +82,9 @@ public class Player extends Entity {
             // CHECK TILE COLLISION
             setCollisionOn(false);
             gp.cChecker.checkTile(this);
+
+            // CHECK OBJECT COLLISION
+            int objIndex = gp.cChecker.checkObject(this, true);
 
             // IF COLLISION IS FALSE, PLAYER CAN MOVE
             if (!collisionOn) {

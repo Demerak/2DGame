@@ -101,7 +101,6 @@ public class CollisionChecker {
                     case "down" -> {
                         entity.getSolidArea().y += entity.getSpeed();
                         if (entity.getSolidArea().intersects(gp.objList.get(i).getSolidArea())) {
-                            System.out.println("down collision");
                             if(gp.objList.get(i).getCollision()) {
                                 entity.collisionOn = true;
                             }
@@ -113,7 +112,6 @@ public class CollisionChecker {
                     case "left" -> {
                         entity.getSolidArea().x -= entity.getSpeed();
                         if (entity.getSolidArea().intersects(gp.objList.get(i).getSolidArea())) {
-                            System.out.println("left collision");
                             if(gp.objList.get(i).getCollision()) {
                                 entity.collisionOn = true;
                             }
@@ -125,7 +123,6 @@ public class CollisionChecker {
                     case "right" -> {
                         entity.getSolidArea().x += entity.getSpeed();
                         if (entity.getSolidArea().intersects(gp.objList.get(i).getSolidArea())) {
-                            System.out.println("right collision");
                             if(gp.objList.get(i).getCollision()) {
                                 entity.collisionOn = true;
                             }

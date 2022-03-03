@@ -1,12 +1,16 @@
 package object;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
+
+// todo optimize drawing function by using UtilityTool
+// todo fix the bug that's preventing me to do so
 
 public class SuperObject {
 
@@ -21,15 +25,6 @@ public class SuperObject {
     private Rectangle solidArea;
     private final int solidAreaDefaultX = x;
     private final int solidAreaDefaultY = y;
-
-    public void setImage(String imageFileName) {
-        String imagePath = "/res/objects/" + imageFileName;
-        try {
-            this.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public boolean getCollision() { return collision; }
 
@@ -56,6 +51,15 @@ public class SuperObject {
 
     public void setSolidArea() { this.solidArea = new Rectangle(x, y, imageWidth, imageHeight); }
 
+    public void setImage(String imageFileName) {
+        UtilityTool uTool = new UtilityTool();
+        try {
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/objects/" + imageFileName)));
+            // this.image = uTool.scaleImage(image,imageWidth,imageHeight);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public void draw(Graphics2D g2, GamePanel gp) {
@@ -67,7 +71,7 @@ public class SuperObject {
                 worldX - gp.getTileSize() < gp.player.getWorldX() + gp.player.getScreenX() &&
                 worldY + gp.getTileSize() > gp.player.getWorldY() - gp.player.getScreenY() &&
                 worldY - gp.getTileSize() < gp.player.getWorldY() + gp.player.getWorldY()) {
-            g2.drawImage(image,screenX,screenY, imageWidth,imageHeight, null);
+            g2.drawImage(image,screenX,screenY, imageWidth, imageHeight, null);
         }
 
     }

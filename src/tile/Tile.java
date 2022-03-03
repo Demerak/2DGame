@@ -13,5 +13,7 @@ public class Tile {
         this.image = image;
     }
 
+    public void setCollision(boolean collision) { this.collision = collision; }
+
 
 }

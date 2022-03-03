@@ -5,7 +5,7 @@ import object.SuperObject;
 
 public class AssetSetter {
 
-    private GamePanel gp;
+    private final GamePanel gp;
 
     public AssetSetter(GamePanel gp) {
         this.gp = gp;

@@ -1,8 +1,10 @@
 package tile;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
+import javax.swing.plaf.multi.MultiListUI;
 import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -27,39 +29,29 @@ public class TileManager {
     }
 
     public void getTileImage() {
+        setup(0, "dirt1", false);
+        setup(0, "dirt2", false);
+        setup(0, "dirt3", false);
+        setup(0, "dirt4", false);
+        setup(0, "dirt5", false);
+        setup(0, "dirt6", false);
+        setup(0, "stone7", false);
+    }
+
+    public void setup(int index, String imageName, boolean collision) {
+
+        UtilityTool uTool = new UtilityTool();
+
         try {
-            Tile dirt1 = new Tile();
-            dirt1.setImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/dirt1.png"))));
-            tiles.add(dirt1);
-
-            Tile dirt2 = new Tile();
-            dirt2.setImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/dirt2.png"))));
-            tiles.add(dirt2);
-
-            Tile dirt3 = new Tile();
-            dirt3.setImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/dirt3.png"))));
-            tiles.add(dirt3);
-
-            Tile dirt4 = new Tile();
-            dirt4.setImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/dirt4.png"))));
-            tiles.add(dirt4);
-
-            Tile dirt5 = new Tile();
-            dirt5.setImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/dirt5.png"))));
-            tiles.add(dirt5);
-
-            Tile dirt6 = new Tile();
-            dirt6.setImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/dirt6.png"))));
-            tiles.add(dirt6);
-
-            Tile stone7 = new Tile();
-            stone7.setImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/stone7.png"))));
-            tiles.add(stone7);
-
-
+            Tile newTile = new Tile();
+            newTile.setImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/tiles/" + imageName + ".png"))));
+            newTile.setImage(uTool.scaleImage(newTile.getImage(), gp.getTileSize(), gp.getTileSize()));
+            newTile.setCollision(collision);
+            tiles.add(newTile);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void createMap() {
@@ -142,7 +134,7 @@ public class TileManager {
                     worldX - gp.getTileSize() < gp.player.getWorldX() + gp.player.getScreenX() &&
                     worldY + gp.getTileSize() > gp.player.getWorldY() - gp.player.getScreenY() &&
                     worldY - gp.getTileSize() < gp.player.getWorldY() + gp.player.getWorldY()) {
-                        g2.drawImage(tiles.get(map[worldRow][worldCol]-1).getImage(),screenX,screenY, gp.getTileSize(), gp.getTileSize(), null);
+                        g2.drawImage(tiles.get(map[worldRow][worldCol]-1).getImage(),screenX,screenY,null);
                 }
             }
         }

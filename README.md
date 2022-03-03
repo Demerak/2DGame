@@ -7,3 +7,14 @@ I decided to create my first ever 2D engine game for fun. I'm listening to a vid
 ### Preview of Progress 
 
 ![](GameProgress.gif)
+
+Some things I have done so far::
+* Implemented basic 2D game mechanism
+    * Sprites animation
+    * World & Camera
+    * Key input
+    * World Generation
+    * etc
+* Added Collision Detection
+* Added objects (the first object added is a chest)
+* Added sound functionality (sound effect and music)

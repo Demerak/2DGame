@@ -33,20 +33,28 @@ public class GamePanel extends JPanel implements Runnable{
     // WORLD SETTINGS
     private final int maxWorldCol = 80;
     private final int maxWorldRow = 80;
+    private final int worldWidth = maxWorldCol * tileSize;
+    private final int worldHeight= maxWorldRow * tileSize;
 
     // public final int worldWidth = tileSize *
 
     // SYSTEM
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Sound music = new Sound();
     Sound se = new Sound(); // Sound Effect
     public CollisionChecker cChecker = new CollisionChecker(this); // todo change to private
     public AssetSetter aSetter = new AssetSetter(this); // todo change to private
     public ArrayList<SuperObject> objList =  new ArrayList<>();
+    public UI ui = new UI(this);
 
     Thread gameThread;
     public Player player = new Player(this, keyH);
+
+
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     private static final int TARGET_FPS = 60;
 
@@ -71,13 +79,13 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGame() {
         aSetter.setObject();
         // playMusic(0); // uncomment to play music
+        gameState = playState;
     }
 
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start(); // call run
     }
-
 
     @Override
     public void run() {
@@ -116,8 +124,12 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update() {
-
-        player.update();
+        if (gameState == playState) {
+            player.update();
+        }
+        if (gameState == pauseState) {
+            //nothing for now
+        }
 
     }
 
@@ -143,6 +155,8 @@ public class GamePanel extends JPanel implements Runnable{
 
         // PLAYER
         player.draw(g2);
+
+        ui.draw(g2);
 
         if (keyH.checkDrawTime) {
             long drawEnd = System.nanoTime();
@@ -186,4 +200,9 @@ public class GamePanel extends JPanel implements Runnable{
     public int getMaxWorldCol() { return maxWorldCol; }
 
     public int getMaxWorldRow() { return maxWorldRow; }
+
+    public int getWorldWidth() { return worldWidth; }
+
+    public int getWorldHeight() { return worldHeight; }
+
 }

@@ -67,13 +67,33 @@ public class SuperObject {
         int screenX = worldX - gp.player.getWorldX() + gp.player.getScreenX();
         int screenY = worldY - gp.player.getWorldY() + gp.player.getScreenY();
 
-        if(worldX + gp.getTileSize() > gp.player.getWorldX() - gp.player.getScreenX() &&
-                worldX - gp.getTileSize() < gp.player.getWorldX() + gp.player.getScreenX() &&
-                worldY + gp.getTileSize() > gp.player.getWorldY() - gp.player.getScreenY() &&
-                worldY - gp.getTileSize() < gp.player.getWorldY() + gp.player.getWorldY()) {
-            g2.drawImage(image,screenX,screenY, imageWidth, imageHeight, null);
+        // STOP MOVING CAMERA
+        if(gp.player.getWorldX() < gp.player.getScreenX()) {
+            screenX = worldX;
+        }
+        if(gp.player.getWorldY() < gp.player.getScreenY()) {
+            screenY = worldY;
+        }
+        int rightOffset = gp.getScreenWidth() - gp.player.getScreenX();
+        if(rightOffset > gp.getWorldWidth() - gp.player.getWorldX()) {
+            screenX = gp.getScreenWidth() - (gp.getWorldWidth() - worldX);
+        }
+        int bottomOffset = gp.getScreenHeight() - gp.player.getScreenY();
+        if(bottomOffset > gp.getWorldHeight() - gp.player.getWorldY()) {
+            screenY = gp.getScreenHeight() - (gp.getWorldHeight() - worldY);
         }
 
+        if(worldX + gp.getTileSize() > gp.player.getWorldX() - gp.player.getScreenX() &&
+            worldX - gp.getTileSize() < gp.player.getWorldX() + gp.player.getScreenX() &&
+            worldY + gp.getTileSize() > gp.player.getWorldY() - gp.player.getScreenY() &&
+            worldY - gp.getTileSize() < gp.player.getWorldY() + gp.player.getWorldY()) {
+                g2.drawImage(image,screenX,screenY, imageWidth, imageHeight, null);
+        } // if player is around the edge, draw everything
+        else if (gp.player.getScreenX() > gp.player.getWorldX() ||
+            gp.player.getWorldY() > gp.player.getWorldY() ||
+            rightOffset > gp.getWorldWidth() - gp.player.getWorldX() ||
+            bottomOffset > gp.getWorldHeight() - gp.player.getWorldY()) {
+                g2.drawImage(image,screenX,screenY, imageWidth, imageHeight, null);
+        }
     }
-
 }

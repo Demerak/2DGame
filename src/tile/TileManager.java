@@ -124,17 +124,35 @@ public class TileManager {
         for (int worldRow = 0; worldRow < gp.getMaxWorldRow(); worldRow++) {
             for (int worldCol = 0; worldCol < gp.getMaxWorldCol(); worldCol++) {
 
-                int worldX = worldCol* gp.getTileSize();
+                int worldX = worldCol * gp.getTileSize();
                 int worldY = worldRow * gp.getTileSize();
 
                 int screenX = worldX - gp.player.getWorldX() + gp.player.getScreenX();
                 int screenY = worldY - gp.player.getWorldY() + gp.player.getScreenY();
+
+                // Stop moving the camera at the edge
+                if (gp.player.getScreenX() > gp.player.getWorldX()) {
+                    screenX = worldX;
+                }
+                if (gp.player.getScreenY() > gp.player.getWorldY()) {
+                    screenY = worldY;
+                }
+                int rightOffset = gp.getScreenWidth() - gp.player.getScreenX();
+                if (rightOffset > gp.getWorldWidth() - gp.player.getWorldX()) {
+                    screenX = gp.getScreenWidth() - (gp.getWorldWidth() - worldX);
+                }
+                int bottomOffset = gp.getScreenHeight() - gp.player.getScreenY();
+                if (bottomOffset > gp.getWorldHeight() - gp.player.getWorldY()) {
+                    screenY = gp.getScreenHeight() - (gp.getWorldHeight() - worldY);
+                }
 
                 if(worldX + gp.getTileSize() > gp.player.getWorldX() - gp.player.getScreenX() &&
                     worldX - gp.getTileSize() < gp.player.getWorldX() + gp.player.getScreenX() &&
                     worldY + gp.getTileSize() > gp.player.getWorldY() - gp.player.getScreenY() &&
                     worldY - gp.getTileSize() < gp.player.getWorldY() + gp.player.getWorldY()) {
                         g2.drawImage(tiles.get(map[worldRow][worldCol]-1).getImage(),screenX,screenY,null);
+                } else {
+                    g2.drawImage(tiles.get(map[worldRow][worldCol]-1).getImage(),screenX,screenY,null);
                 }
             }
         }

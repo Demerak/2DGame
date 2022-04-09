@@ -53,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
 
@@ -79,7 +80,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGame() {
         aSetter.setObject();
         // playMusic(0); // uncomment to play music
-        gameState = playState;
+        gameState = titleState;
     }
 
     public void startGameThread() {
@@ -143,26 +144,36 @@ public class GamePanel extends JPanel implements Runnable{
             drawStart = System.nanoTime();
         }
 
-        // TILE
-        tileM.draw(g2);
+        // TITLE STATE
+        if (gameState == titleState) {
+            ui.draw(g2);
+        }
+        // OTHER STATE
+        else {
+            // TILE
+            tileM.draw(g2);
 
-        // OBJECT
-        for (int i = 0; i < objList.size(); i++) {
-            if(objList.get(i) != null) {
-                objList.get(i).draw(g2, this);
+            // OBJECT
+            for (int i = 0; i < objList.size(); i++) {
+                if(objList.get(i) != null) {
+                    objList.get(i).draw(g2, this);
+                }
+            }
+
+            // PLAYER
+            player.draw(g2);
+
+            // UI
+            ui.draw(g2);
+
+            if (keyH.checkDrawTime) {
+                long drawEnd = System.nanoTime();
+                long passed = drawEnd - drawStart;
+                System.out.println("Draw Time: " + passed*Math.pow(10,-9) + " second");
             }
         }
 
-        // PLAYER
-        player.draw(g2);
 
-        ui.draw(g2);
-
-        if (keyH.checkDrawTime) {
-            long drawEnd = System.nanoTime();
-            long passed = drawEnd - drawStart;
-            System.out.println("Draw Time: " + passed*Math.pow(10,-9) + " second");
-        }
 
 
         g2.dispose();
